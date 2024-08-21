@@ -1,8 +1,7 @@
 ## UDA-Bench: Revisiting Common Assumptions in Unsupervised Domain Adaptation Using a Standardized Framework
+### ECCV 2024.
 
-_Submitted along with the supplementary material to ECCV, paperId: 11391._
-
-### UDABench
+## UDABench
 
 We design a new consolidated framework for standardized training and evaluation of UDA methods in PyTorch. We give a brief overview of the training existing UDA implementations, along with guidance on implementaing new UDA methods using our framework.
 
@@ -118,3 +117,20 @@ The framework can easily be extended to add newer UDA methods. For this, the fol
 3. Implement new loss functions in `losses/`.
 
 The architecture, dataloader or the training strategy can also be modified if necessary.
+
+### Citation
+
+If this code or our work helps in your work, please consider citing us. 
+``` text
+@article{kalluri2024lagtran,
+        author    = {Kalluri, Tarun and Ravichandran, Sreyas and Chandraker, Manmohan},
+        title     = {UDA-Bench: Revisiting Common Assumptions in Unsupervised Domain Adaptation Using a Standardized Framework},
+        journal   = {ECCV},
+        year      = {2024},
+        url       = {},
+      },
+```
+
+### Contact
+
+If you have any question about this project, please contact [Tarun Kalluri](sskallur@ucsd.edu).
