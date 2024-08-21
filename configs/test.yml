@@ -1,0 +1,25 @@
+seed: 1
+model:
+    feature_extractor:
+        arch: resnet50
+        pretrained: false
+    classifier:
+        arch: mlpcls
+        nonlinear: relu
+        feat_size: [2048, 256] 
+        # feat_size: 2048 
+        n_class: 31 
+data:
+    target:
+        loader: FileDataLoader
+        data_root: /data/
+        val: target.txt
+        n_workers: 4
+        drop_last: false
+        n_class: 31 
+testing:
+    batch_size: 64
+    resume:
+        model: 
+        load_cls: true
+        param_only: true
