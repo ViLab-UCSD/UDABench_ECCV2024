@@ -1,78 +1,92 @@
 ## UDA-Bench: Revisiting Common Assumptions in Unsupervised Domain Adaptation Using a Standardized Framework
-### ECCV 2024.
 
-## UDABench
+**ECCV 2024**
 
-We design a new consolidated framework for standardized training and evaluation of UDA methods in PyTorch. We give a brief overview of the training existing UDA implementations, along with guidance on implementaing new UDA methods using our framework.
+<!-- [![PyPI version](https://badge.fury.io/py/udabench.svg)](https://badge.fury.io/py/udabench)
+[![Downloads](https://pepy.tech/badge/udabench)](https://pepy.tech/project/udabench) -->
 
-### Datasets
+**UDA-Bench** is a comprehensive and standardized PyTorch framework for training and evaluating Unsupervised Domain Adaptation (UDA) methods. This repository provides a foundation for researchers to:
 
-The train and test files for all the datasets used in the paper are present in `data` as `.txt` files. The repository currently contains datasets for `DomainNet`, `visDA`, `CUB200` and `OfficeHome`. 
+- **Benchmark UDA methods**: Easily compare different UDA techniques on a standardized platform.
+- **Implement new UDA methods**: Extend the framework to incorporate novel methods with minimal effort.
+- **Reproduce experiments**: Replicate the comparative studies conducted in our ECCV 2024 paper.
 
-The images can be downloaded from the official sources of these datasets.
+**Highlights:**
 
-### UDA Methods.
+- **Consolidated Framework**: A unified structure for training and evaluating UDA methods, streamlining the research process.
+- **Comprehensive Method Support**: Includes implementations of leading UDA algorithms like DANN, CDAN, MCC, MDD, MemSAC, ILADA, SAFN, BSP, MCD, AdaMatch, DALN, and ToAlign.
+- **Modular Architecture**: Easily extendable to accommodate new UDA algorithms, loss functions, and backbones.
+- **Reproducibility**: Facilitates replicating experimental setups and results from our paper, enhancing research transparency.
 
-The following UDA methods have been currently implemented in this framework.
+### Installation
 
- 1. DANN
- 2. CDAN
- 3. MCC
- 4. MDD
- 5. MemSAC
- 6. ILADA
- 7. SAFN
- 8. BSP
- 9. MCD
- 10. AdaMatch 
- 11. DALN 
- 12. ToAlign
+Install the necessary dependencies using the `requirements.txt` file:
 
-### Requirements
-
-You can install the necessary dependencies required for the framework using the `requirements.txt` file as follows:
-
-```
+```bash
 pip install -r requirements.txt
 ```
 
+### Datasets
+
+The repository includes dataset loaders for `DomainNet`, `visDA`, `CUB200`, and `OfficeHome`. The train and test files are available in the `data` directory as `.txt` files. You can download the images from the official sources of these datasets.
+
+### UDA Methods
+
+The following UDA methods are currently implemented in this framework:
+
+1. **DANN**
+2. **CDAN**
+3. **MCC**
+4. **MDD**
+5. **MemSAC**
+6. **ILADA**
+7. **SAFN**
+8. **BSP**
+9. **MCD**
+10. **AdaMatch**
+11. **DALN**
+12. **ToAlign**
+
 ### Training
 
-For training one of the existing UDA methods, you can use the following command.
+Train an existing UDA method using the following command:
 
-```
+```bash
 #!/bin/bash
 
-export trainer=cdan
-export dataset=DomainNet
-export n_class=345
-export data_root=/data
-export source=real
-export target=clipart
+export trainer=cdan # Select a UDA method
+export dataset=DomainNet # Choose a dataset
+export n_class=345 # Number of classes
+export data_root=/data # Path to data directory
+export source=real # Source domain
+export target=clipart # Target domain
 
-python3 train.py --config configs/$trainer.yml --source data/$dataset/${source}_train.txt --target data/$dataset/${target}_train.txt --num_class $n_class --data_root $data_root --num_iter 90000 --exp_name test --trainer $trainer
+python3 train.py --config configs/$trainer.yml \
+    --source data/$dataset/${source}_train.txt \
+    --target data/$dataset/${target}_train.txt \
+    --num_class $n_class --data_root $data_root \
+    --num_iter 90000 --exp_name test --trainer $trainer
 ```
 
-You can replace the `trainer` using any of the implemented UDA methods.
-
+**Replace `trainer` with any of the implemented UDA methods.**
 
 ### Comparative Studies
 
-We additionally facilitate easy reproduction of the comparative studies conducted in the paper. You can use the following modifications to the command above to run these experiments.
+Reproduce the comparative studies conducted in our paper:
 
-#### Changing backbone architecture
+#### Changing Backbone Architecture
 
-The framework currently supports the following backbones.
+The framework supports the following backbones:
 
- - ResNet50: `resnet50`
- - ConvNext: `timm_convnext`
- - SWIN: `timm_swin`
- - ResMLP: `timm_resmlp`
- - DeiT: `timm_deit`
+- ResNet50: `resnet50`
+- ConvNext: `timm_convnext`
+- SWIN: `timm_swin`
+- ResMLP: `timm_resmlp`
+- DeiT: `timm_deit`
 
-To change the default ResNet-50 architecture, you can use the following command.
+Change the default ResNet-50 architecture using the following command:
 
-```
+```bash
 #!/bin/bash
 
 export trainer=cdan
@@ -81,16 +95,21 @@ export n_class=345
 export data_root=/data
 export source=real
 export target=clipart
-export backbone=timm_deit
+export backbone=timm_deit # Select a backbone
 
-python3 train.py --config configs/$trainer.yml --source data/$dataset/${source}_train.txt --target data/$dataset/${target}_train.txt --num_class $n_class --data_root $data_root --num_iter 90000 --exp_name test --trainer $trainer --backbone $backbone
+python3 train.py --config configs/$trainer.yml \
+    --source data/$dataset/${source}_train.txt \
+    --target data/$dataset/${target}_train.txt \
+    --num_class $n_class --data_root $data_root \
+    --num_iter 90000 --exp_name test --trainer $trainer \
+    --backbone $backbone
 ```
 
-#### Effect of amount of Data
+#### Effect of Amount of Data
 
-To reproduce the results with reduced target unlabeled data, you can use the following command. 
+Reproduce results with reduced target unlabeled data:
 
-```
+```bash
 #!/bin/bash
 
 export trainer=cdan
@@ -100,37 +119,40 @@ export data_root=/data
 export source=real
 export target=clipart
 export backbone=resnet50
-export tgt_data_vol=50
+export tgt_data_vol=50 # Percentage of target unlabeled data
 
-python3 train.py --config configs/$trainer.yml --source data/$dataset/${source}_train.txt --target data/$dataset/${target}_train.txt --num_class $n_class --data_root $data_root --num_iter 90000 --exp_name test --trainer $trainer --backbone $backbone --target_imb_factor ${tgt_data_vol}
+python3 train.py --config configs/$trainer.yml \
+    --source data/$dataset/${source}_train.txt \
+    --target data/$dataset/${target}_train.txt \
+    --num_class $n_class --data_root $data_root \
+    --num_iter 90000 --exp_name test --trainer $trainer \
+    --backbone $backbone --target_imb_factor ${tgt_data_vol}
 ```
 
-The `tgt_data_vol` should be a number indicating the percentage of target unlabeled data to be used. By default, the class-balanced sub-sampling strategy will be applied.
+### Implementing New UDA Methods
 
-### Implementing new UDA methods.
+Extend the framework to add new UDA methods:
 
+1. **Add a new config file**: Create `configs/<method>.yaml`.
+2. **Implement the forward pass module**: Create `UDA_trainer/<method>.py`.
+3. **Implement new loss functions**: Create new loss functions in `losses/`.
 
-The framework can easily be extended to add newer UDA methods. For this, the following modifications can be performed.
-
-1. Add a new config file in `configs/<method>.yaml`
-2. Implement the forward pass module in `UDA_trainer/<method>.py`.
-3. Implement new loss functions in `losses/`.
-
-The architecture, dataloader or the training strategy can also be modified if necessary.
+You can also modify the architecture, dataloader, or training strategy if needed.
 
 ### Citation
 
-If this code or our work helps in your work, please consider citing us. 
-``` text
+If you use this code or our work, please cite our paper:
+
+```text
 @article{kalluri2024lagtran,
-        author    = {Kalluri, Tarun and Ravichandran, Sreyas and Chandraker, Manmohan},
-        title     = {UDA-Bench: Revisiting Common Assumptions in Unsupervised Domain Adaptation Using a Standardized Framework},
-        journal   = {ECCV},
-        year      = {2024},
-        url       = {},
-      },
+       author   = {Kalluri, Tarun and Ravichandran, Sreyas and Chandraker, Manmohan},
+       title    = {UDA-Bench: Revisiting Common Assumptions in Unsupervised Domain Adaptation Using a Standardized Framework},
+       journal  = {ECCV},
+       year     = {2024},
+       url      = {},
+     },
 ```
 
 ### Contact
 
-If you have any question about this project, please contact [Tarun Kalluri](sskallur@ucsd.edu).
+For any questions or inquiries, please contact [Tarun Kalluri](sskallur@ucsd.edu).
